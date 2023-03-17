@@ -87,6 +87,5 @@ def checking(j,row,column):
     else:
         return 1
 
-virus1()
-printing()               
+virus1()              
 antivirus()
