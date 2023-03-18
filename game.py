@@ -9,6 +9,8 @@ n=17
 count=0
 c_1=0
 c_2=0
+e=0
+num=0
 
 ############## GAME LOGIC ##############
 
@@ -186,7 +188,7 @@ def game_server():
                  antivirus()
             move=pickle.dumps(TTT)
             game_socket.send(move)
-
+            print('Waiting for opponents move')
             opp_move = game_socket.recv(4096)
             TTT=pickle.loads(opp_move)
             printing()
@@ -194,17 +196,61 @@ def game_server():
                  antivirus()
             move=pickle.dumps(TTT)
             game_socket.send(move)
+            print('Waiting for opponents move')
             opp_move = game_socket.recv(4096)
             TTT=pickle.loads(opp_move)
             printing()
             for i in range(0,3):
                  antivirus()
-            move=pickle.dumps(TTT)
-            game_socket.send(move)
-            global count
-            print('Opponents count')
+            global count,c_1,c_2,e,num
+            print('your bug count')
             print(count)
+            c_1=count
+            c=str(count)
+            game_socket.send(c.encode())
+            count=0
+            num=game_socket.recv(4096).decode
+            c=''
+            print('YOU are now team VIRUS')
+            TTT=[['1','2','3','4','5','6'],['7','8','9','10','11','12'],['13','14','15','16','17','18'],['19','20','21','22','23','24'],['25','26','27','28','29','30'],['31','32','33','34','35','36']]
 
+            virus1() 
+            printing()
+            move=pickle.dumps(TTT)
+            game_socket.send(move)
+            print('Waiting for opponents move')
+            opp_move = game_socket.recv(4096)
+            TTT=pickle.loads(opp_move)
+            printing()
+            virus2()
+            printing()
+            move=pickle.dumps(TTT)
+            game_socket.send(move)
+            print('Waiting for opponents move')
+            opp_move = game_socket.recv(4096)
+            TTT=pickle.loads(opp_move)
+            printing()
+            virus2()
+            printing()
+            move=pickle.dumps(TTT)
+            game_socket.send(move)
+            print('Waiting for opponents move')
+            count = game_socket.recv(1024).decode()
+            print('Opponents bug count')
+            print(count)
+            c_2=int(count)
+            if c_1>c_2:
+                 print("You Won")
+                 w=1
+                 game_socket.send(w)
+            else:
+                 print('You Lost')
+                 w=0
+                 game_socket.send(w)
+            
+            
+            if e==1:
+                 break
 
     #       if not opp_move:
     #         break
@@ -234,12 +280,12 @@ def game_client(opponent):
       print('The game will go on by exchanging the teams and the player who collects most number of bugs win')
 
       while True:
-            global TTT
+            global TTT,e
             virus1() 
             printing()
             move=pickle.dumps(TTT)
             game_socket.send(move)
-
+            print('Waiting for opponents move')
             opp_move = game_socket.recv(4096)
             TTT=pickle.loads(opp_move)
             printing()
@@ -247,7 +293,7 @@ def game_client(opponent):
             printing()
             move=pickle.dumps(TTT)
             game_socket.send(move)
-
+            print('Waiting for opponents move')
             opp_move = game_socket.recv(4096)
             TTT=pickle.loads(opp_move)
             printing()
@@ -255,13 +301,64 @@ def game_client(opponent):
             printing()
             move=pickle.dumps(TTT)
             game_socket.send(move)
-             
-            opp_move = game_socket.recv(4096)
-            TTT=pickle.loads(opp_move)
-            printing()
-            global count
-            print('Opponents count')
+            print('Waiting for opponents move')
+            global count,c_1,c_2
+            c = game_socket.recv(4096).decode()
+            count=int(c)
+            print('Opponents bug count')
             print(count)
+            c_1=count
+            count=0
+            print('Round 2 YOU are now team ANTIVIRUS')
+            num='0'
+
+
+            print("waiting for opp's move")
+            game_socket.send(num.encode())
+            opp_move = game_socket.recv(4096)
+            TTT=pickle.loads(opp_move)
+            printing()
+
+            for i in range(0,5):
+                 antivirus()
+            move=pickle.dumps(TTT)
+            game_socket.send(move)
+            print('Waiting for opponents move')
+            opp_move = game_socket.recv(4096)
+            TTT=pickle.loads(opp_move)
+            printing()
+            for i in range(0,3):
+                 antivirus()
+            move=pickle.dumps(TTT)
+            game_socket.send(move)
+            print('Waiting for opponents move')
+            opp_move = game_socket.recv(4096)
+            TTT=pickle.loads(opp_move)
+            printing()
+            for i in range(0,3):
+                 antivirus()
+            print('your bug count')
+            print(count)
+            c_2=count
+            c=str(count)
+            game_socket.send(c.encode())
+
+            w=game_socket.recv(4096)
+            if w==1:
+                 print('You Lost')
+                 global e
+                 e=1
+                 print('Game Ended')
+                 break
+            else:
+                 print('You Won')
+               
+                 e=1
+                 print('Game ended')
+                 break
+
+            
+           
 
 #         print_current_board()
 #         move = get_users_move()
